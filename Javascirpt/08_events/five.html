@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Keyboard Check Magic</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #111;
+      color: white;
+      margin-top: 100px;
+    }
+
+    .container {
+      display: inline-block;
+      padding: 30px;
+      border-radius: 10px;
+      background: #222;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .box {
+      margin: 10px 0;
+      padding: 10px;
+      background: #333;
+      border-radius: 5px;
+    }
+
+    .highlight {
+      color: cyan;
+      font-weight: bold;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Press Any Key 👇</h1>
+
+    <div class="box">Key: <span id="key" class="highlight">-</span></div>
+    <div class="box">Code: <span id="code">-</span></div>
+    <div class="box">KeyCode: <span id="keyCode">-</span></div>
+    <div class="box">Ctrl Pressed: <span id="ctrl">false</span></div>
+    <div class="box">Alt Pressed: <span id="alt">false</span></div>
+    <div class="box">Shift Pressed: <span id="shift">false</span></div>
+  </div>
+
+  <script>
+
+    // Step 1: Add event listener to whole document
+    document.addEventListener("keydown", function(event) {
+
+      // Step 2: Get event properties
+      const key = event.key;
+      const code = event.code;
+      const keyCode = event.keyCode;
+      const ctrl = event.ctrlKey;
+      const alt = event.altKey;
+      const shift = event.shiftKey;
+
+      // Step 3: Update DOM elements
+      document.getElementById("key").textContent = key === " " ? "Space" : key;
+      document.getElementById("code").textContent = code;
+      document.getElementById("keyCode").textContent = keyCode;
+      document.getElementById("ctrl").textContent = ctrl;
+      document.getElementById("alt").textContent = alt;
+      document.getElementById("shift").textContent = shift;
+    });
+
+  </script>
+
+</body>
+</html>
