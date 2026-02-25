@@ -1,5 +1,5 @@
 This is the Roadmap to become full stack developer in next 7 days 
-1)JS->chai aur code 
+1)JS->chai aur code (Completed)
 2)React -> chai aur code 
 3)Nodejs->Chai aur Code 
 4)postgresql-> Piyush Garg 
