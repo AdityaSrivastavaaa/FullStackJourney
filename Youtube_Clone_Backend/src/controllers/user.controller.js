@@ -4,6 +4,7 @@ import {User} from "../models/user.model.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose"
 
 const generateAccessAndRefreshTokens = async (userId) => {
   try {
@@ -156,8 +157,8 @@ const logoutUser = asyncHandler(async(req,res)=>{
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set:{
-        refreshToken:undefined,
+      $unset:{
+        refreshToken:1
       }
     },
     {
@@ -182,7 +183,7 @@ const logoutUser = asyncHandler(async(req,res)=>{
 })
 const refreshAccessToken = asyncHandler(async(req,res)=>{
  const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
- if(incomingRefreshToken){
+ if(!incomingRefreshToken){
   throw new ApiError(401,"Unauthorized Request")
  }
 try {
@@ -267,11 +268,11 @@ const updateAccountDetails = asyncHandler(async(req,res)=>{
     throw new ApiError(400,"All fields are required")
   }
 
-  const user = User.findByIdAndUpdate(
+  const user = await  User.findByIdAndUpdate(
     req.user?._id,
   {
     $set:{
-      fullName:fullname,
+      fullname:fullname,
       email,
 
     }
@@ -305,7 +306,7 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
       avatar:avatar.url
      }
   },
-  {new:true}
+  { returnDocument: "after" }
  ).select("-password")
 
  return res
@@ -382,7 +383,7 @@ const channel = await User.aggregate([
         $size:"$subscribedTo"
       },
       isSubscribed:{
-        $condition:{
+        $cond:{
           if:{$in:[req.user?._id,"$subscribers.subscriber"]},
           then:true,
           else:false,
